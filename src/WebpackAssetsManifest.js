@@ -83,7 +83,7 @@ class WebpackAssetsManifest
     // This is what gets JSON stringified
     this.assets = this.options.assets;
 
-    // hashed filename : original filename
+    // original filename : hashed filename
     this.assetNames = new Map();
 
     // This is passed to the customize() hook
@@ -359,7 +359,7 @@ class WebpackAssetsManifest
       maybeArrayWrap( assets[ chunkName ] )
         .filter( f => ! this.isHMR(f) ) // Remove hot module replacement files
         .forEach( filename => {
-          this.assetNames.set( filename, chunkName + this.getExtension( filename ) );
+          this.assetNames.set( chunkName + this.getExtension( filename ), filename );
         });
     });
 
@@ -451,7 +451,7 @@ class WebpackAssetsManifest
 
     this.processAssetsByChunkName( this.stats.assetsByChunkName );
 
-    for ( const [ hashedFile, filename ] of this.assetNames ) {
+    for ( const [ filename, hashedFile ] of this.assetNames ) {
       this.currentAsset = compilation.assets[ hashedFile ];
 
       // `integrity` may have already been set by another plugin, like `webpack-subresource-integrity`.
@@ -513,7 +513,7 @@ class WebpackAssetsManifest
    */
   handleAfterEmit(compilation)
   {
-    // Reset the internal mapping of hashed name to original name after every compilation.
+    // Reset the internal mapping of original name to hashed name after every compilation.
     this.assetNames.clear();
 
     if ( ! this.options.writeToDisk ) {
@@ -544,32 +544,34 @@ class WebpackAssetsManifest
     loaderContext.emitFile = (...args) => {
       const [ name ] = args;
 
-      if ( ! this.assetNames.has( name ) ) {
-        let originalName = path.join(
-          path.dirname(name),
-          path.basename(module.userRequest)
+      let originalName = path.join(
+        path.dirname(name),
+        path.basename(module.userRequest)
+      );
+
+      if (this.options.usePathBasedKeys) {
+        const options = loaderUtils.getOptions(loaderContext);
+
+        // If the option is enabled, attempt to prefix the keys in our
+        // manifest with [path]
+        const pathVariable = loaderUtils.interpolateName(
+          loaderContext,
+          '[path]',
+          // Use any custom context we've been given, otherwise just use
+          // the root context
+          { context: options && options.context ? options.context : rootContext }
         );
 
-        if (this.options.usePathBasedKeys) {
-          const options = loaderUtils.getOptions(loaderContext);
-
-          // If the option is enabled, attempt to prefix the keys in our
-          // manifest with [path]
-          const pathVariable = loaderUtils.interpolateName(
-            loaderContext,
-            '[path]',
-            // Use any custom context we've been given, otherwise just use
-            // the root context
-            { context: options && options.context ? options.context : rootContext }
-          );
-
-          // Don't prefix any keys that already start with [path]
-          if (!originalName.startsWith(pathVariable)) {
-            originalName = path.join(pathVariable, originalName);
-          }
+        // Don't prefix any keys that already start with [path]
+        if (!originalName.startsWith(pathVariable)) {
+          originalName = path.join(pathVariable, originalName);
         }
+      }
 
-        this.assetNames.set(name, originalName);
+      // ignore emitFile calls from mini-css-extract-plugin
+      // https://github.com/webpack-contrib/mini-css-extract-plugin/pull/177
+      if (!module.identifier().includes('/mini-css-extract-plugin/')) {
+        this.assetNames.set(originalName, name);
       }
 
       return emitFile.apply(module, args);
