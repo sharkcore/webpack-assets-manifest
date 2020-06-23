@@ -117,6 +117,58 @@ function server()
   };
 }
 
+function includesPaths()
+{
+  return {
+    mode: 'development',
+    target: 'node',
+    entry: {
+      includesPaths: path.resolve(__dirname, './paths.js'),
+    },
+    output: {
+      path: tmpDirPath(),
+      filename: '[name].js',
+    },
+    module: {
+      rules: [
+        {
+          test: /\.jpg$/i,
+          loader: 'file-loader',
+          options: {
+            name: '[path][name].[ext]',
+          },
+        },
+      ],
+    },
+  };
+}
+
+function customContext() {
+  return {
+    mode: 'development',
+    target: 'node',
+    entry: {
+      includesPaths: path.resolve(__dirname, './paths.js'),
+    },
+    output: {
+      path: tmpDirPath(),
+      filename: '[name].js',
+    },
+    module: {
+      rules: [
+        {
+          test: /\.jpg$/i,
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            context: path.resolve(__dirname, 'fixtures'),
+          },
+        },
+      ],
+    },
+  };
+}
+
 function devServer( outputPath )
 {
   outputPath = outputPath || '/';
@@ -144,6 +196,8 @@ module.exports = {
   client,
   server,
   devServer,
+  includesPaths,
+  customContext,
   multi,
   getTmpDir,
   tmpDirPath,
