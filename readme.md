@@ -1,4 +1,4 @@
-**This is a fork of webdeveric/webpack-assets-manifest, with webdeveric/webpack-assets-manifest/53 and webdeveric/webpack-assets-manifest/73 merged.**
+**This is a fork of webdeveric/webpack-assets-manifest, with [#53](https://github.com/webdeveric/webpack-assets-manifest/pull/53) and [#73](https://github.com/webdeveric/webpack-assets-manifest/pull/73) merged.**
 
 # Webpack Assets Manifest
 
