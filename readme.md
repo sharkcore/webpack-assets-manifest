@@ -1,3 +1,5 @@
+**This is a fork of webdeveric/webpack-assets-manifest, with webdeveric/webpack-assets-manifest/53 and webdeveric/webpack-assets-manifest/73 merged.**
+
 # Webpack Assets Manifest
 
 [![Build Status](https://travis-ci.org/sharkcore/webpack-assets-manifest.svg?branch=master)](https://travis-ci.org/sharkcore/webpack-assets-manifest)
