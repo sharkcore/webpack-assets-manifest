@@ -1,9 +1,9 @@
 # Webpack Assets Manifest
 
-[![Build Status](https://travis-ci.org/webdeveric/webpack-assets-manifest.svg?branch=master)](https://travis-ci.org/webdeveric/webpack-assets-manifest)
-[![codecov](https://codecov.io/gh/webdeveric/webpack-assets-manifest/branch/master/graph/badge.svg)](https://codecov.io/gh/webdeveric/webpack-assets-manifest)
-[![dependencies Status](https://david-dm.org/webdeveric/webpack-assets-manifest/status.svg)](https://david-dm.org/webdeveric/webpack-assets-manifest)
-[![devDependencies Status](https://david-dm.org/webdeveric/webpack-assets-manifest/dev-status.svg)](https://david-dm.org/webdeveric/webpack-assets-manifest?type=dev)
+[![Build Status](https://travis-ci.org/sharkcore/webpack-assets-manifest.svg?branch=master)](https://travis-ci.org/sharkcore/webpack-assets-manifest)
+[![codecov](https://codecov.io/gh/sharkcore/webpack-assets-manifest/branch/master/graph/badge.svg)](https://codecov.io/gh/sharkcore/webpack-assets-manifest)
+[![dependencies Status](https://david-dm.org/sharkcore/webpack-assets-manifest/status.svg)](https://david-dm.org/sharkcore/webpack-assets-manifest)
+[![devDependencies Status](https://david-dm.org/sharkcore/webpack-assets-manifest/dev-status.svg)](https://david-dm.org/sharkcore/webpack-assets-manifest?type=dev)
 
 This Webpack plugin will generate a JSON file that matches the original filename with the hashed version.
 
